@@ -41,7 +41,7 @@ INSERT INTO role
 VALUES
     ('Salesperson', 30000, 1),
     ('Personal Trainer', 50000, 2),
-    ('Janitor', 21000,4,
+    ('Janitor', 21000, 4),
     ('Gym Maintenance', 45000, 4),
     ('Check-in Desk', 21000, 3);
 
