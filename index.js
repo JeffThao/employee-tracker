@@ -111,12 +111,11 @@ function addDepartment() {
   ]).then(function (answer) {
     console.log("Updating all department...\n");
     connection.query(
-      "INSERT into department SET ?", answer,
-      [
+      "INSERT into department SET ?",
         {
           name: answer.department
         }
-      ],
+      ,
       function (err, res) {
         if (err) throw err;
         console.log("Department updated!\n");
@@ -138,19 +137,22 @@ function addRoles() {
       type: "input",
       name: "salary",
       message: "What is the salary for this role?"
+    },
+    {
+      name: "deptId",
+      message: "What is the department ID?",
+      type: "input"
     }
   ]).then(function (answer) {
     console.log("Updating all roles...\n");
     connection.query(
-      "UPDATE role SET ? WHERE ?",
-      [
+      "INSERT into role SET ?",
         {
-          title: answer.role
-        },
-        {
-          salary: answer.salary
+          title: answer.role,
+          salary: answer.salary,
+          department_id: answer.deptId
         }
-      ],
+      ,
       function (err, res) {
         if (err) throw err;
         console.log("Roles updated!\n");
@@ -163,7 +165,40 @@ function addRoles() {
 }
 
 function addEmployees() {
-
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "first_name",
+      message: "What is the employee's first name?"
+    },
+    {
+      type: "input",
+      name: "last_name",
+      message: "What is the employee's last name?"
+    },
+    {
+      name: "role_id",
+      message: "What is the role ID?",
+      type: "input"
+    }
+  ]).then(function (answer) {
+    console.log("Adding Employee...\n");
+    connection.query(
+      "INSERT into employee SET ?",
+        {
+          first_name: answer.first_name,
+          last_name: answer.last_name,
+          role_id: answer.role_id
+        }
+      ,
+      function (err, res) {
+        if (err) throw err;
+        console.log("Roles updated!\n");
+        console.table(res);
+        mainMenu();
+      }
+    );
+  })
 }
 
 function viewRoles() {
