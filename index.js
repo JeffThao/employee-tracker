@@ -62,8 +62,8 @@ function mainMenu() {
           value: "addDept"
         },
         {
-          name: "Quit",
-          value: "quit"
+          name: "Exit",
+          value: "exit"
         }
       ]
     }
@@ -78,40 +78,41 @@ function mainMenu() {
           break;
         case "viewAllRoles":
           // code block
-          console.log("works")
-          viewRoles()
+          console.log("works");
+          viewRoles();
           break;
         case "viewDept":
           // code block
-          console.log("works")
-          //   Not sure if this function is correct viewDepartment()
+          console.log("works");
+          viewDepartment();
           break;
         case "viewEmployeesByDept":
           // code block
-          console.log("works")
-          viewDepartment()
+          console.log("works");
+          viewDepartment();
           break;
         case "updateEmployeeRole":
           // code block
-          console.log("works")
-          addRoles()
+          console.log("works");
+          addRoles();
           break;
         case "addEmployee":
           // code block
-          console.log("works")
-          addEmployees()
+          console.log("works");
+          addEmployees();
           break;
         case "addRole":
           // code block
-          console.log("works")
-          addRoles()
+          console.log("works");
+          addRoles();
           break;
         case "addDept":
           // code block
           console.log("works")
-          addDepartment()
+          addDepartment();
           break;
-        default: quit();
+        default: 
+        exit();
         // code block
       }
 
@@ -119,12 +120,34 @@ function mainMenu() {
 }
 
 function addDepartment() {
-
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "department",
+      message: "What is the new Department?"
+    }
+  ]).then(function (answer) {
+    console.log("Updating all department...\n");
+    connection.query(
+      "UPDATE department SET ? WHERE ?",
+      [
+        {
+          name: answer.department
+        }
+      ],
+      function (err, res) {
+        if (err) throw err;
+        console.log("Department updated!\n");
+        console.table(res);
+        mainMenu();
+      }
+    );
+  })
 }
 
 function addRoles() {
   inquirer.prompt([
-      {
+    {
       type: "input",
       name: "role",
       message: "What is the new Role?"
@@ -134,7 +157,7 @@ function addRoles() {
       name: "salary",
       message: "What is the salary for this role?"
     }
-  ]).then(function(answer){
+  ]).then(function (answer) {
     console.log("Updating all roles...\n");
     connection.query(
       "UPDATE role SET ? WHERE ?",
@@ -148,7 +171,9 @@ function addRoles() {
       ],
       function (err, res) {
         if (err) throw err;
-        console.log(res + " roles updated!\n");
+        console.log("Roles updated!\n");
+        console.table(res);
+        mainMenu();
       }
     );
   })
@@ -179,7 +204,6 @@ function viewDepartment() {
   connection.query("SELECT * FROM department", function (err, res) {
     if (err) throw err;
     console.table(res);
-    connection.end();
     mainMenu()
   });
 }
@@ -189,9 +213,13 @@ function viewEmployees() {
   connection.query("SELECT * FROM employee", function (err, res) {
     if (err) throw err;
     console.table(res);
-    connection.end();
     mainMenu()
   });
+}
+
+function exit(){
+  console.log("Logging out...\n");
+  connection.end();
 }
 
 
