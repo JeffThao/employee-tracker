@@ -1,9 +1,8 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-//const db = require("./db");
 const cTable = require('console.table');
 
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
@@ -12,7 +11,7 @@ var connection = mysql.createConnection({
   // Your username
   user: "root",
 
-  // Your password
+
   password: "root",
   database: "employees_db"
 });
@@ -70,50 +69,33 @@ function mainMenu() {
   ])
     .then(function (response) {
       console.log(response)
-
-      //user data, what do I do with it?
       switch (response.choice) {
         case "viewEmployees":
           viewEmployees();
           break;
         case "viewAllRoles":
-          // code block
-          console.log("works");
           viewRoles();
           break;
         case "viewDept":
-          // code block
-          console.log("works");
           viewDepartment();
           break;
         case "viewEmployeesByDept":
-          // code block
-          console.log("works");
           viewDepartment();
           break;
         case "updateEmployeeRole":
-          // code block
-          console.log("works");
           addRoles();
           break;
         case "addEmployee":
-          // code block
-          console.log("works");
           addEmployees();
           break;
         case "addRole":
-          // code block
-          console.log("works");
           addRoles();
           break;
         case "addDept":
-          // code block
-          console.log("works")
           addDepartment();
           break;
         default: 
         exit();
-        // code block
       }
 
     });
@@ -129,7 +111,7 @@ function addDepartment() {
   ]).then(function (answer) {
     console.log("Updating all department...\n");
     connection.query(
-      "UPDATE department SET ? WHERE ?",
+      "INSERT into department SET ?", answer,
       [
         {
           name: answer.department
@@ -180,27 +162,21 @@ function addRoles() {
 
 }
 
-function addManager() {
-
-}
-
 function addEmployees() {
 
 }
 
 function viewRoles() {
-  console.log("Selecting all Rows...\n")
+  console.log("Selecting all Roles...\n")
   connection.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
-    // Log all results of the SELECT statement
     console.table(res);
-    connection.end();
     mainMenu()
   });
 }
 
 function viewDepartment() {
-  console.log("Selecting all Employees...\n");
+  console.log("Selecting all Departments...\n");
   connection.query("SELECT * FROM department", function (err, res) {
     if (err) throw err;
     console.table(res);
@@ -221,6 +197,3 @@ function exit(){
   console.log("Logging out...\n");
   connection.end();
 }
-
-
-//mainMenu()
