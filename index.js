@@ -186,7 +186,7 @@ function viewDepartment() {
 
 function viewEmployees() {
   console.log("Selecting all Employees...\n");
-  connection.query("SELECT * FROM employee", function (err, res) {
+  connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id", function (err, res) {
     if (err) throw err;
     console.table(res);
     mainMenu()
